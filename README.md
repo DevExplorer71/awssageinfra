@@ -13,23 +13,28 @@ This project provisions AWS infrastructure using Terraform modules to automate a
 - **IAM**: Manages permissions for Glue and SageMaker
 - **SageMaker**: Trains and deploys ML models
 
-## Steps to Use
+
+## End-to-End Workflow
 1. **Provision Infrastructure**
    - Clone this repo
    - Configure your AWS credentials
    - Run `terraform init` and `terraform apply` to create resources
 
 2. **Ingest Data from API**
-   - Write a script to fetch sales data from your API
-   - Save the data as CSV and upload to the S3 bucket created by Terraform
+   - Run `ingest_sales_data.py` to fetch sales data from your API, save as CSV, and upload to S3
 
 3. **Catalog Data with Glue**
    - Glue crawler will scan the S3 bucket and create a table in the Glue Data Catalog
    - (Optional) Use Glue jobs for further ETL/transformations
 
-4. **Train and Deploy Model with SageMaker**
-   - Use SageMaker to run AutoML or custom training on the cataloged data
-   - Deploy the trained model to a SageMaker endpoint for inference
+4. **Train Model with SageMaker**
+   - Run `train_model.py` to start an AutoML job on the sales data in S3
+
+5. **Deploy Model to SageMaker Endpoint**
+   - Run `deploy_model.py` to deploy the trained model to a SageMaker endpoint
+
+6. **Get Predictions**
+   - Run `predict.py` to send new data to the endpoint and receive predictions
 
 ## Notes
 - **Glue** is used for data cataloging and ETL. It does not store data, but helps organize and prepare it for ML.
@@ -40,10 +45,14 @@ This project provisions AWS infrastructure using Terraform modules to automate a
 - Adjust module variables in Terraform to fit your data and ML requirements
 - Add scripts for data ingestion and model training as needed
 
+
 ## Example Workflow
-1. Fetch sales data from API → Save as CSV → Upload to S3
+1. Run `ingest_sales_data.py` to fetch and upload sales data to S3
 2. Glue crawler catalogs S3 data → Table available for ML
-3. SageMaker trains model on Glue table → Deploys endpoint
+3. Run `train_model.py` to train model on cataloged data
+4. Run `deploy_model.py` to deploy model to SageMaker endpoint
+5. Run `predict.py` to get predictions from the endpoint
 
 ---
+
 For questions or enhancements, open an issue or contact the maintainer.
